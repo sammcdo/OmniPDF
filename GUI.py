@@ -16,11 +16,11 @@ class GUI:
         self.goto = sg.InputText(str(self.cur_page + 1), size=(5, 1), key="-PageNumber-")
 
         self.menu_def = [['&File', ['&Open     Ctrl-O', '&Save       Ctrl-S', '&Properties', 'E&xit']],
-                    ['&Edit', ['&Paste', ['Special', 'Normal', ], 'Undo'], ],
-                    ['&Toolbar', ['---', 'Command &1', 'Command &2',
-                                  '---', 'Command &3', 'Command &4']],
-                    ['&Help', '&About...'], ]
-        
+                         ['&Edit', ['&Paste', ['Special', 'Normal', ], 'Undo'], ],
+                         ['&Toolbar', ['---', 'Command &1', 'Command &2',
+                                       '---', 'Command &3', 'Command &4']],
+                         ['&Help', '&About...'], ]
+
         self.layout = [
             [sg.Menu(self.menu_def, tearoff=False, pad=(200, 1))],
             [
@@ -52,6 +52,11 @@ class GUI:
                  'PySimpleGUI Version', sg.version, grab_anywhere=True)
         self.window.reappear()
 
+    def onOpen(self):
+        print("Open")
+        filename = sg.popup_get_file('file to open', no_window=True)
+        print(filename)
+
     def mainloop(self):
         while True:
             event, value = self.window.read()
@@ -72,7 +77,7 @@ class GUI:
             # sanitize page number
             if self.cur_page >= len(self.pdf.pdf):  # wrap around
                 self.cur_page = 0
-            while self.cur_page < 0:         # pages > 0 look nicer
+            while self.cur_page < 0:  # pages > 0 look nicer
                 self.cur_page += len(self.pdf.pdf)
 
             data = self.pdf.getImage(self.cur_page)
@@ -85,6 +90,10 @@ class GUI:
             """ --- Menu Events --- """
             if event == "About...":
                 self.onAbout()
+            if event == 'Open     Ctrl-O':
+                self.onOpen()
+            elif event == 'Properties':
+                pass
 
             """ --- Exit Events --- """
             if event == sg.WIN_CLOSED and (value is None or value['-PageNumber-'] is None):
