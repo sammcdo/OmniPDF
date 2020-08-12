@@ -29,3 +29,6 @@ class PdfHandler():
         pixMap = page.getPixmap(matrix=mat_0, alpha=False)
 
         pixMap.writePNG(filename)
+    
+    def saveAs(self, filename):
+        self.pdf.save(filename)

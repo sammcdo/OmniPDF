@@ -62,6 +62,10 @@ class GUI:
             data = self.pdf.getImage(self.cur_page)
             self.image_elem.update(data=data)
             self.goto.update(str(self.cur_page + 1))
+    
+    def onSaveAs(self):
+        filename = sg.popup_get_file('Save As', no_window=True, save_as=True)
+        self.pdf.saveAs(filename)
 
     def mainloop(self):
         while True:
@@ -96,8 +100,10 @@ class GUI:
             """ --- Menu Events --- """
             if event == "About...":
                 self.onAbout()
-            if event == 'Open     Ctrl-O':
+            elif event == 'Open     Ctrl-O':
                 self.onOpen()
+            elif event == 'Save       Ctrl-S':
+                self.onSaveAs()
             elif event == 'Properties':
                 pass
 
