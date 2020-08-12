@@ -1,4 +1,5 @@
 import PySimpleGUI as sg
+import os
 
 import PdfHandler
 
@@ -24,8 +25,8 @@ class GUI:
         self.layout = [
             [sg.Menu(self.menu_def, tearoff=False, pad=(200, 1))],
             [
-                sg.ReadButton('Next'),
                 sg.ReadButton('Prev'),
+                sg.ReadButton('Next'),
                 sg.Text('Page:'),
                 self.goto,
                 sg.Text('(%i)' % len(self.pdf.pdf)),
@@ -53,9 +54,14 @@ class GUI:
         self.window.reappear()
 
     def onOpen(self):
-        print("Open")
-        filename = sg.popup_get_file('file to open', no_window=True)
-        print(filename)
+        filename = sg.popup_get_file('File to Open', no_window=True)
+        if os.path.isfile(filename):
+            self.pdf = PdfHandler.PdfHandler(filename)
+            self.cur_page = 0
+
+            data = self.pdf.getImage(self.cur_page)
+            self.image_elem.update(data=data)
+            self.goto.update(str(self.cur_page + 1))
 
     def mainloop(self):
         while True:
