@@ -36,7 +36,7 @@ class GUI:
 
         title = "OmniPDF"
         self.window = sg.Window(title, self.layout, return_keyboard_events=True,
-                                location=(0, 0), use_default_focus=False, no_titlebar=False)
+                                location=(0, 0), use_default_focus=False, no_titlebar=False, resizable=False)
 
         # now define the buttons / events we want to handle
         self.enter_buttons = [chr(13), "Return:13"]
@@ -54,7 +54,7 @@ class GUI:
         self.window.reappear()
 
     def onOpen(self):
-        filename = sg.popup_get_file('File to Open', no_window=True)
+        filename = sg.popup_get_file('File to Open', no_window=True, file_types=(("PDF Files", "*.pdf"),))
         if os.path.isfile(filename):
             self.pdf = PdfHandler.PdfHandler(filename)
             self.cur_page = 0
